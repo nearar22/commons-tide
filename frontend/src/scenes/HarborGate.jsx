@@ -24,33 +24,37 @@ export function HarborGate() {
     <div className={styles.page}>
       {/* Hero: split. Statement left, live basin right. */}
       <section className={styles.hero}>
-        <div className={styles.heroText}>
-          <p className="ct-eyebrow">Semantic resource tide protocol</p>
-          <h1 className={styles.headline}>
+        <motion.div className={styles.heroText}
+          initial="hidden" animate="show"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}>
+          <motion.p className="ct-eyebrow" variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } }}>Semantic resource tide protocol</motion.p>
+          <motion.h1 className={styles.headline} variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } }}>
             Let shared resources <span className={styles.accent}>flow fairly.</span>
-          </h1>
-          <p className={styles.sub}>
+          </motion.h1>
+          <motion.p className={styles.sub} variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } }}>
             CommonsTide turns needs, urgencies, and written community principles into a transparent
             allocation tide. An allocator on GenLayer divides a scarce pool, and a conservation engine
             enforces the budget on-chain so the water never overspills.
-          </p>
-          <div className={styles.cta}>
+          </motion.p>
+          <motion.div className={styles.cta} variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } }}>
             <Button to="/basin" variant="primary" size="lg" iconRight={ArrowRight}>Open a pool</Button>
             <Button to="/chronicle" variant="ghost" size="lg" icon={ScrollText}>View the tide chronicle</Button>
-          </div>
-          <dl className={styles.heroStats}>
+          </motion.div>
+          <motion.dl className={styles.heroStats} variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } }}>
             <div><dt>Pools opened</dt><dd>{stats.pools}</dd></div>
             <div><dt>Tides run</dt><dd>{stats.rounds}</dd></div>
             <div><dt>Settled</dt><dd>{stats.settled}</dd></div>
-          </dl>
-        </div>
-        <aside className={styles.heroBasin}>
+          </motion.dl>
+        </motion.div>
+        <motion.aside className={styles.heroBasin}
+          initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}>
           <BasinCanvas fill={0.66} reserve={0.2} height={360} band="balanced" />
           <div className={styles.basinLabels}>
             <span><span className={styles.dot} style={{ background: 'var(--current-blue)' }} /> Spendable pool</span>
             <span><span className={styles.dot} style={{ background: 'var(--lagoon-cyan)' }} /> Protected reserve</span>
           </div>
-        </aside>
+        </motion.aside>
       </section>
 
       {/* Why equal split is unfair: asymmetric thesis + stacked reasons */}

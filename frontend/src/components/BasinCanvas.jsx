@@ -56,8 +56,9 @@ export function BasinCanvas({ fill = 0.62, reserve = 0.2, height = 320, band = '
       // Water body up to the fill level with a moving caustic surface
       const top = waterY(fill);
       const wg = ctx.createLinearGradient(0, top, 0, h);
-      wg.addColorStop(0, `rgba(58,141,255,0.10)`);
-      wg.addColorStop(1, `rgba(11,39,48,0.55)`);
+      wg.addColorStop(0, `rgba(69,240,223,0.22)`);
+      wg.addColorStop(0.5, `rgba(58,141,255,0.20)`);
+      wg.addColorStop(1, `rgba(11,39,48,0.7)`);
       ctx.fillStyle = wg;
       ctx.beginPath();
       ctx.moveTo(0, top);
@@ -71,15 +72,19 @@ export function BasinCanvas({ fill = 0.62, reserve = 0.2, height = 320, band = '
       ctx.closePath();
       ctx.fill();
 
-      // Surface highlight line
-      ctx.strokeStyle = `rgba(${r},${g},${b},0.65)`;
-      ctx.lineWidth = 2;
+      // Surface highlight line with a glow
+      ctx.save();
+      ctx.shadowColor = `rgba(${r},${g},${b},0.8)`;
+      ctx.shadowBlur = 12;
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.9)`;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       for (let x = 0; x <= w; x += 8) {
         const y = top + Math.sin(x * 0.018 + time * 1.4) * amp + Math.sin(x * 0.05 + time * 0.7) * (amp * 0.4);
         if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
+      ctx.restore();
 
       // Drifting caustic dots below the surface
       if (!reduced) {

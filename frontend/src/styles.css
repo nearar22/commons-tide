@@ -84,12 +84,30 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--text-primary);
-  background:
-    radial-gradient(1100px 560px at 78% -8%, rgba(58, 141, 255, 0.12), transparent 60%),
-    radial-gradient(900px 520px at 8% 108%, rgba(69, 240, 223, 0.08), transparent 60%),
-    var(--bg-base);
+  background: var(--bg-base);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Living aurora: slow drifting light fields behind everything. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(640px 420px at 18% 12%, rgba(69, 240, 223, 0.16), transparent 60%),
+    radial-gradient(720px 480px at 82% 8%, rgba(58, 141, 255, 0.18), transparent 62%),
+    radial-gradient(680px 520px at 70% 92%, rgba(122, 229, 130, 0.10), transparent 60%),
+    radial-gradient(560px 460px at 12% 88%, rgba(58, 141, 255, 0.10), transparent 60%);
+  filter: blur(8px);
+  animation: aurora 24s ease-in-out infinite;
+}
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(-3%, 2%, 0) scale(1.06); }
+  66% { transform: translate3d(2%, -2%, 0) scale(1.03); }
 }
 
 #root { min-height: 100vh; isolation: isolate; }
@@ -217,6 +235,7 @@ code, kbd { font-family: var(--font-mono); }
   width: 30px; height: 30px; border-radius: 9px;
   background: linear-gradient(135deg, var(--lagoon-cyan), var(--current-blue));
   display: grid; place-items: center; color: #04161a;
+  box-shadow: 0 0 18px rgba(69, 240, 223, 0.4);
 }
 .ct-brand-name { font-family: var(--font-display); font-weight: 700; color: var(--text-bright); letter-spacing: -0.01em; }
 .ct-brand-sub { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.18em; text-transform: uppercase; }
