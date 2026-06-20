@@ -1,0 +1,32 @@
+.page { display: flex; flex-direction: column; gap: var(--space-lg); }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; }
+.title { font-size: var(--text-2xl); margin-top: var(--space-2xs); }
+.lead { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-2xs); max-width: 64ch; }
+.headActions { display: flex; gap: var(--space-sm); }
+
+.filters { display: flex; gap: var(--space-xs); }
+.chip { padding: 7px 16px; border-radius: var(--radius-pill); border: var(--rule-thin) solid var(--border-hairline); background: var(--bg-panel); color: var(--text-muted); font-size: var(--text-sm); }
+.chip[data-active='true'] { color: var(--text-bright); border-color: var(--border-accent); background: rgba(69, 240, 223, 0.08); }
+
+.error { color: var(--sunlit-sand); font-size: var(--text-sm); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); }
+.card {
+  display: flex; flex-direction: column; gap: var(--space-sm);
+  padding: var(--space-lg); border: var(--rule-thin) solid var(--border-hairline);
+  border-radius: var(--radius-lg); background: var(--bg-panel);
+  transition: transform var(--dur-mid) var(--ease-out), border-color var(--dur-mid) var(--ease-out);
+}
+.card:hover { transform: translateY(-3px); border-color: var(--border-accent); }
+.cardTop { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); }
+.cardStatus { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+.cardStatus[data-status='settled'] { color: var(--kelp-green); }
+.cardBand { font-family: var(--font-mono); font-size: var(--text-xs); }
+.cardTitle { font-size: var(--text-md); }
+
+.levelTrack { position: relative; height: 8px; border-radius: var(--radius-pill); background: var(--bg-inset); overflow: hidden; display: flex; }
+.levelFill { height: 100%; background: linear-gradient(90deg, var(--current-blue), var(--lagoon-cyan)); }
+.levelReserve { height: 100%; background: rgba(69, 240, 223, 0.3); }
+
+.cardMeta { display: flex; flex-wrap: wrap; gap: var(--space-md); font-size: var(--text-sm); color: var(--text-muted); }
+.cardLink { display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--lagoon-cyan); font-family: var(--font-display); font-weight: 600; }
