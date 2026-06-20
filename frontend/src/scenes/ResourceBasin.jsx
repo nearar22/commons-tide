@@ -116,7 +116,7 @@ export function ResourceBasin() {
 
           <div className={styles.submitRow}>
             <span className={styles.spendNote}>
-              {spendable} {unit} spendable, {reserve} {unit} protected
+              <b>{spendable} {unit}</b> spendable, <i>{reserve} {unit}</i> protected
             </span>
             <Button type="submit" variant="primary" iconRight={ArrowRight} disabled={!canSubmit || busy}>
               {busy ? (actions.status || 'Opening...') : 'Open the pool'}
