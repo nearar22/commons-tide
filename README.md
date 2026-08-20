@@ -24,6 +24,7 @@ resource where urgency and written policy matter as much as arithmetic.
 
 **Live on GenLayer Studio.**
 
+- App: [commons-tide.pages.dev](https://commons-tide.pages.dev)
 - Contract: [`0xe305...1DcC`](https://explorer-studio.genlayer.com/address/0xe305bE1b6600f2c51D7Bc226f79B88D30b4A1DcC)
 - Deployment: [`0xc1d9...9ffd`](https://explorer-studio.genlayer.com/tx/0xc1d97373686942c99093ad1883e9dd740fa644f1919bcd9fb40b1fa6ca259ffd)
 - Verified pool: `pool-1` · settled · reserve intact
