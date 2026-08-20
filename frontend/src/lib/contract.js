@@ -1,22 +1,25 @@
 import { createClient } from 'genlayer-js';
-import { testnetBradbury } from 'genlayer-js/chains';
+import { studionet } from 'genlayer-js/chains';
 
 // CommonsTide reads the live Intelligent Contract directly and writes through
 // the user's own wallet. The contract is the only backend; there is no server.
-export const CONTRACT_ADDRESS = '0x18c47fFbA8a2602606213258f04875607EC01645';
-export const DEPLOY_TX = '0x5ae7e5a090dd41d2a901907923a437974d815cba074547c4cd2e32919642d838';
-export const EXPLORER = 'https://explorer-bradbury.genlayer.com';
-export const FAUCET = 'https://testnet-faucet.genlayer.foundation/';
-export const RPC_URL = 'https://rpc-bradbury.genlayer.com';
-export const NETWORK_NAME = 'Bradbury';
-export const CHAIN_ID = 4221;
-export const CHAIN_ID_HEX = '0x107D';
+export const CONTRACT_ADDRESS = '0xe305bE1b6600f2c51D7Bc226f79B88D30b4A1DcC';
+export const DEPLOY_TX = '0xc1d97373686942c99093ad1883e9dd740fa644f1919bcd9fb40b1fa6ca259ffd';
+export const EXPLORER = 'https://explorer-studio.genlayer.com';
+export const FAUCET = 'https://studio.genlayer.com/';
+export const RPC_URL = 'https://studio.genlayer.com/api';
+export const NETWORK_NAME = 'GenLayer Studio';
+export const CHAIN_ID = 61999;
+export const CHAIN_ID_HEX = '0x' + CHAIN_ID.toString(16);
 
 export const addressUrl = (addr) => `${EXPLORER}/address/${addr}`;
 export const txUrl = (hash) => `${EXPLORER}/tx/${hash}`;
 
-export const readClient = createClient({ chain: testnetBradbury });
-export const makeWalletClient = (account) => createClient({ chain: testnetBradbury, account });
+export const readClient = createClient({ chain: studionet });
+export const makeWalletClient = (account, provider) => {
+  if (!provider) throw new Error('Browser wallet provider is unavailable.');
+  return createClient({ chain: studionet, account, provider });
+};
 
 // Fairness bands the contract derives, with display metadata.
 export const BANDS = {

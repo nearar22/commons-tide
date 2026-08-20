@@ -51,7 +51,7 @@ export function ResourceBasin() {
     const res = await actions.run('open_pool', [title.trim(), unit.trim(), Number(total), Number(reserve), principles.trim()]);
     if (!res.ok) {
       if (actions.error) pushToast({ tone: 'error', title: 'Could not open the pool', message: actions.error });
-      else if (res.needWallet) pushToast({ tone: 'info', title: 'Connect your wallet', message: 'A wallet on Bradbury is needed to open a pool.' });
+      else if (res.needWallet) pushToast({ tone: 'info', title: 'Connect your wallet', message: 'Connect a wallet on GenLayer Studio to open a pool.' });
       setSubmitting(false);
       return;
     }

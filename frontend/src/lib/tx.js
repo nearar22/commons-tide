@@ -13,8 +13,20 @@ export const statusName = (s) => {
   return STATUS_NAME[String(s)] || String(s).toUpperCase();
 };
 
-const TERMINAL = new Set(['ACCEPTED', 'FINALIZED', 'UNDETERMINED', 'CANCELED']);
+const TERMINAL = new Set([
+  'ACCEPTED', 'FINALIZED', 'UNDETERMINED', 'CANCELED',
+  'VALIDATORS_TIMEOUT', 'LEADER_TIMEOUT',
+]);
 export const isTerminal = (name) => TERMINAL.has(name);
+
+export function assertAccepted(decision) {
+  const status = statusName(decision?.status);
+  if (status === 'ACCEPTED' || status === 'FINALIZED') return decision;
+  if (status === 'TIMEOUT') {
+    throw new Error('Transaction confirmation timed out. Check the explorer before retrying.');
+  }
+  throw new Error(`Transaction ended with ${status}. No change was confirmed.`);
+}
 
 export async function pollUntilDecided(client, hash, onUpdate, opts = {}) {
   const { tries = 90, intervalMs = 6000 } = opts;

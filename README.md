@@ -1,27 +1,45 @@
-```
-COMMONSTIDE  ::  HARBOR MASTER'S TIDE ALMANAC
-Instrument : semantic division of a scarce shared pool
-Venue      : GenLayer Bradbury, chain 4221
-Allocator  : an AI proposal under validator consensus (advisory)
-Arbiter    : a deterministic conservation engine in contract code (binding)
-Contract   : 0x18c47fFbA8a2602606213258f04875607EC01645
-```
+# CommonsTide
 
-Let shared resources flow fairly. CommonsTide turns needs, urgencies, and
-written community principles into a transparent allocation tide: an AI divides a
-fixed pool across competing requesters, and a conservation engine enforces the
-budget on-chain so the water never overspills. What follows is a tide almanac,
-read it entry by entry the way a harbor master reads the tables before the water
-moves.
+### A semantic allocator for scarce community resources
 
-Contract on the explorer:
-https://explorer-bradbury.genlayer.com/address/0x18c47fFbA8a2602606213258f04875607EC01645
-Deployed by tx:
-https://explorer-bradbury.genlayer.com/tx/0x5ae7e5a090dd41d2a901907923a437974d815cba074547c4cd2e32919642d838
+[![GenLayer](https://img.shields.io/badge/GenLayer-Intelligent_Contract-155e75)](https://genlayer.com)
+[![Contract tests](https://img.shields.io/badge/contract_tests-4_passing-15803d)](#verification)
+[![Frontend tests](https://img.shields.io/badge/frontend_tests-2_passing-15803d)](#verification)
+
+> A community writes its principles. Members explain what they need. Validators
+> audit an exact allocation, while contract code guarantees that the protected
+> reserve is never spent.
+
+CommonsTide turns a fixed pool into an auditable allocation rather than a race,
+an equal split, or an administrator's opaque spreadsheet. It is designed for
+mentorship hours, grants, review slots, event seats, shared compute, and any
+resource where urgency and written policy matter as much as arithmetic.
+
+| Layer | Responsibility | Trust model |
+|---|---|---|
+| AI allocator | Proposes one grant and reason per request | Advisory |
+| GenLayer validators | Audit the exact vector against principles and evidence | Semantic consensus |
+| Conservation engine | Enforces spendable total, reserve, request caps, and minimum-useful amounts | Deterministic |
+| Steward | Settles only a feasible reviewed allocation | Role-gated |
+
+**Live on GenLayer Studio.**
+
+- Contract: [`0xe305...1DcC`](https://explorer-studio.genlayer.com/address/0xe305bE1b6600f2c51D7Bc226f79B88D30b4A1DcC)
+- Deployment: [`0xc1d9...9ffd`](https://explorer-studio.genlayer.com/tx/0xc1d97373686942c99093ad1883e9dd740fa644f1919bcd9fb40b1fa6ca259ffd)
+- Verified pool: `pool-1` · settled · reserve intact
 
 ---
 
-## TIDE TABLE I: the problem the water removes
+## The tide at a glance
+
+```text
+open pool -> collect requests -> semantic allocation audit
+          -> deterministic conservation -> steward settlement -> proof hash
+```
+
+---
+
+## Tide Table I: the problem the water removes
 
 Communities share scarce capacity: mentorship hours, treasury budget, review
 slots, event seats. When demand exceeds supply, an equal split is the lazy
@@ -30,16 +48,16 @@ what the community promised to protect. Allocating fairly under scarcity is a
 judgment, not an average, and that judgment is exactly what a normal contract
 cannot make.
 
-## TIDE TABLE II: why GenLayer is load-bearing
+## Tide Table II: why GenLayer is load-bearing
 
 A normal contract can check a quota or a balance. It cannot read whether a
 request is genuinely urgent, whether an allocation honors a written principle,
 or whether a group is being quietly deprioritized. CommonsTide puts that
-allocation judgment on GenLayer: the AI proposes how to divide the pool, many
-validators reproduce a derived fairness reading, and they must agree before the
-tide moves. The judgment is the on-chain settlement, not an off-chain opinion.
+allocation judgment on GenLayer: the AI proposes an exact division, validators
+audit that same vector against every principle, urgency, amount, minimum-useful
+constraint, and reason, and only then does the deterministic engine run.
 
-## TIDE TABLE III: the basin (a pool)
+## Tide Table III: the basin (a pool)
 
 A steward opens a pool with a total amount, a protected emergency reserve, a
 unit, and the community principles the allocator must honor. The spendable water
@@ -49,7 +67,7 @@ is the total minus the reserve. The reserve is never allocatable.
 open_pool(title, unit, total, reserve, principles)
 ```
 
-## TIDE TABLE IV: the islands (requests)
+## Tide Table IV: the islands (requests)
 
 Each member submits a request: an amount wanted, an urgency (blocker, high,
 medium, low), a minimum useful amount, and a written reason. A request can never
@@ -60,7 +78,7 @@ it asked for. These are deterministic guards, checked before any model runs.
 submit_request(pool_id, name, requested, urgency, min_useful, reason)
 ```
 
-## TIDE TABLE V: running the tide (the load-bearing entry)
+## Tide Table V: running the tide (the load-bearing entry)
 
 Anyone can run an allocation round. The allocator reads the requests and the
 principles and proposes one integer grant per request with a one-line reason.
@@ -80,15 +98,14 @@ if 0 < grant < min_useful:
 
 The engine re-derives coverage, unmet need, reserve health, and a fairness band
 (`balanced`, `minor_pressure`, `needs_rebalance`, `constraint_violation`). The
-model can propose anything; the arithmetic decides what is feasible. The
-validators agree on the derived band, not on the raw grant numbers, because an
-open-ended division never matches byte-for-byte across two runs.
+validators audit the leader's exact allocation for substantive fairness while
+the arithmetic independently guarantees feasibility and reserve conservation.
 
 ```
 run_allocation(pool_id)
 ```
 
-## TIDE TABLE VI: the settlement
+## Tide Table VI: the settlement
 
 Only the steward can settle, and only a balanced or minor-pressure tide whose
 reserve is intact. A `needs_rebalance` or a breached reserve is refused in code,
@@ -99,7 +116,7 @@ proof over the settled division.
 settle_pool(pool_id)   ->  proofHash
 ```
 
-## TIDE TABLE VII: a worked tide (verified on-chain)
+## Tide Table VII: a worked tide (legacy demonstration)
 
 Pool: 80 mentorship hours, 16 reserved, 64 spendable. Principles: prioritize
 blocked work, protect the reserve, do not overload, delay the flexible.
@@ -108,15 +125,15 @@ blocked work, protect the reserve, do not overload, delay the flexible.
 Builder A      blocker  wants 6   ->  granted 6   (cannot ship while blocked)
 Docs           high     wants 3   ->  granted 3   (release depends on it)
 Newcomer       medium   wants 4   ->  granted 4   (onboarding set-aside)
-Builder B      medium   wants 10  ->  granted 3   (useful but flexible; delayed)
+Builder B      medium   wants 10  ->  granted 0   (flexible work delayed)
 
-band: minor_pressure   reserve: intact   coverage: 69%   proof: 0x56d42986e5ea233e
+band: minor_pressure   reserve: intact   coverage: 56%   proof: 0xd5ec17c0886493a3
 ```
 
 Builder B, the flexible request, absorbs the scarcity instead of the blocked
 contributor. The reserve is never touched. That is the tide working.
 
-## TIDE TABLE VIII: reading the contract yourself
+## Tide Table VIII: reading the contract yourself
 
 ```
 get_pools(start)     the shoreline, newest first
@@ -125,7 +142,7 @@ get_allocation(id)   the current allocation result
 get_stats()          totals: pools, rounds, settled
 ```
 
-## TIDE TABLE IX: running the harbor locally
+## Tide Table IX: running the harbor locally
 
 ```
 # read the live contract, no wallet needed
@@ -133,8 +150,8 @@ cd frontend
 npm install
 npm run dev            # open the harbor, browse real pools from the chain
 
-# to write (open a pool, add requests, run a tide, settle) connect a wallet on
-# Bradbury and claim test GEN from the faucet first
+# to write (open a pool, add requests, run a tide, settle), connect a wallet on
+# GenLayer Studio. The Studio network is gasless.
 
 # redeploy your own instance, or re-verify the full lifecycle
 cd ../scripts
@@ -142,17 +159,40 @@ python deploy.py            # deploy the contract, writes deployment.json
 python verify_full.py       # open, request, allocate, settle, prove on-chain
 ```
 
-## TIDE TABLE X: the deterministic guards and backstops
+## Tide Table X: the deterministic guards and backstops
 
-The validator does not check shape, it checks substance. Removing the model and
-returning a constant would still be rejected: required fields and ranges are
-guarded before the model, the conservation engine re-runs after consensus, the
-reserve floor is enforced in code, and settlement is gated by the derived band
-and the reserve being intact. The arithmetic, not the prompt, decides.
+The validator does not check shape, it checks substance. A copied, arbitrary,
+one-sided, overspending, or prompt-injected vector is rejected. Required fields
+and ranges are guarded before the model, the conservation engine re-runs after
+consensus, and settlement remains gated by the band and intact reserve.
+
+Automated coverage includes principle validation, exact allocation auditing,
+conservation, stale-allocation invalidation, steward-only settlement, wallet
+provider wiring, and fail-closed transaction status handling.
 
 ```
 Mechanic   : a scarce-pool DIVISION machine (not a text-scoring judge)
 Stack      : Python GenVM contract + React/Vite SPA on genlayer-js
 Hosting    : Cloudflare Pages, static, reads chain views, writes via wallet
-No deposits, no value transfer. Members pay only the network fee.
+No deposits and no value transfer. Studio writes are gasless.
 ```
+
+## Verification
+
+```bash
+# Intelligent Contract invariants
+gltest tests -q
+# 4 passed
+
+# Transaction-status behavior
+cd frontend
+npm test
+# 2 passed
+
+# Production bundle
+npm run build
+```
+
+The suite proves more than a happy path: a stale allocation cannot settle,
+non-stewards cannot finalize a pool, the reserve survives every accepted vector,
+and `UNDETERMINED` is never presented to the user as success.

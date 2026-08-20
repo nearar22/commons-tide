@@ -138,7 +138,7 @@ export function HarborGate() {
             <Button to="/basin" variant="primary" size="lg" iconRight={ArrowRight}>Open the first pool</Button>
           </div>
           <p className={styles.contract}>
-            Live contract <code className="ct-mono">{CONTRACT_ADDRESS}</code> on GenLayer Bradbury.
+            Live contract <code className="ct-mono">{CONTRACT_ADDRESS}</code> on GenLayer Studio.
           </p>
         </section>
       </Reveal>

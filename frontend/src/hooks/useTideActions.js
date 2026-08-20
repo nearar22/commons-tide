@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 import { makeWalletClient, CONTRACT_ADDRESS } from '../lib/contract.js';
-import { pollUntilDecided } from '../lib/tx.js';
+import { assertAccepted, pollUntilDecided } from '../lib/tx.js';
 
 function friendlyError(e) {
   const s = String(e && e.message ? e.message : e);
   if (/user rejected|denied/i.test(s)) return 'You declined the signature request.';
-  if (/LackOfFundForMaxFee|insufficient/i.test(s)) return 'Wallet balance is below the write fee reserve. Claim test GEN and retry.';
+  if (/LackOfFundForMaxFee|insufficient/i.test(s)) return 'The Studio transaction could not be funded or signed. Check the wallet network and retry.';
   if (/rate limit|429/i.test(s)) return 'The network is busy. Wait a moment and retry.';
   return s.replace(/^\[[A-Z_]+\]\s*/, '') || 'The transaction could not be completed.';
 }
@@ -38,28 +38,24 @@ export function useTideActions({ wallet, pausePolling, resumePolling } = {}) {
       setError(null);
       setPhase('wallet');
       setStatus('PENDING');
-      const client = makeWalletClient(wallet.address);
-      let hash = null;
       try {
-        hash = await client.writeContract({ address: CONTRACT_ADDRESS, functionName, args, value: 0n });
+        const client = makeWalletClient(wallet.address, wallet.provider);
+        const hash = await client.writeContract({ address: CONTRACT_ADDRESS, functionName, args, value: 0n });
+        if (!hash) throw new Error('Wallet did not return a transaction hash. Nothing was submitted.');
+        setPhase('working');
+        const decision = await pollUntilDecided(client, hash, (s) => setStatus(s));
+        assertAccepted(decision);
+        busy.current = false;
+        setPhase('idle');
+        resumePolling?.();
+        return { ok: true, hash };
       } catch (e) {
-        if (/user rejected|denied|LackOfFundForMaxFee|insufficient/i.test(String(e))) {
-          setPhase('error');
-          setError(friendlyError(e));
-          busy.current = false;
-          resumePolling?.();
-          return { ok: false };
-        }
-        // Non-fatal: the tx may still be live; fall through to status polling.
+        setPhase('error');
+        setError(friendlyError(e));
+        busy.current = false;
+        resumePolling?.();
+        return { ok: false };
       }
-      setPhase('working');
-      if (hash) {
-        await pollUntilDecided(client, hash, (s) => setStatus(s));
-      }
-      busy.current = false;
-      setPhase('idle');
-      resumePolling?.();
-      return { ok: true, hash };
     },
     [wallet, pausePolling, resumePolling],
   );

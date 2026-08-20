@@ -1,11 +1,9 @@
-"""Shared GenLayer helpers: load the funded key from .env, build a client, and
-read views via the raw provider (genlayer_py read_contract is broken on Bradbury
-because gen_call returns a dict, not a hex string)."""
+"""Shared GenLayer helpers for the gasless Studio network."""
 import os
 import urllib.request
 
 from genlayer_py import create_client, create_account
-from genlayer_py.chains import testnet_bradbury
+from genlayer_py.chains import studionet
 
 import genlayer_py  # noqa
 try:
@@ -36,7 +34,7 @@ def load_pk() -> str:
 
 def make_client():
     account = create_account(account_private_key=load_pk())
-    client = create_client(chain=testnet_bradbury, account=account)
+    client = create_client(chain=studionet, account=account)
     return client, account
 
 
